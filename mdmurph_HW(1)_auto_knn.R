@@ -3,12 +3,11 @@
 auto <- read.csv("auto.csv", stringsAsFactors = + FALSE)
 str(auto)
 
-#delete the rows with missing values in horsepower
-auto<-auto[!(auto$horsepower=="?"),]
-str(auto)
-
 #convert horsepower from string to integer
 auto$horsepower<-as.integer(auto$horsepower)
+
+#delete the rows with missing values in horsepower
+auto<-na.omit(auto)
 
 #add a mpg1 variable which is 1 if mpg > median_mpg, otherwise 0
 #calculate median mpg
@@ -31,11 +30,8 @@ auto["mpg1"]<-0
 #apply mpgtest function to mpgtestv vector and save in df auto as variable mpg1
 auto$mpg1<-sapply(mpgtestv,mpgtest)
 
-#test mpg1 calc
-#summary(auto[c("mpg1")])
-
 #select list of variables to drop from the model
-drop.cols <- c("mpg","origin","name") #to remove multiple columns
+drop.cols <- c("mpg","origin","name") #to remove multiple columns from model
 auto<-auto[, !names(auto) %in% drop.cols, drop = F]
 
 #set seed of random number generator
